@@ -144,4 +144,18 @@ class StudentController extends Controller
              }
 
         }
+//This will delete the record from DB
+        public function destroy($id)
+        {
+            $student = Student::find($id);
+            if($student){
+
+                $student->delete();
+            }else{
+                return response()->json([
+                    'status' => 404,
+                    'message'=> 'No student found'
+                ],404);
+            }
+        }
  }
