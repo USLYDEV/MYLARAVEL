@@ -30,6 +30,7 @@ class StudentController extends Controller
          }
     }
 
+    //VALIDATE AND CREATE NEW ITEM IN MODEL DB 
     public function store(Request $request){
 
             $validator = Validator::make($request->all(), [
@@ -67,6 +68,7 @@ class StudentController extends Controller
              }
      }
 
+     //SHOW LIST OF ITEM IN DB
         public function show ($id)
         {
             $student = Student::find($id);
@@ -82,6 +84,64 @@ class StudentController extends Controller
                 ],404);
 
             }
+
+        }
+
+        public function edit ($id)
+        {
+            $student = Student::find($id);
+            if($student){
+                return response()->json([
+                    'status' => 200,
+                    'student'=> $student
+                ],200);
+            }else{
+                return response()->json([
+                    'status' => 404,
+                    'message'=> 'No Such Student Found!'
+                ],404);
+
+            }
+
+        }
+//UPDATE DB MODEL RECORD
+        public function update (Request $request, int $id){
+            $validator = Validator::make($request->all(), [
+                'name' => 'required',
+                'course' => 'required',
+                'email' => 'required',
+                'phone' => 'required',
+            ]);
+
+            if($validator->fails()){
+                return response()->json([
+                    'status' => 422,
+                    'error' => $validator->messages()
+                ],422 );
+             }else{
+
+                $student = Student::find($id);
+                
+                if($student){
+                    $student->update([
+                        'name' => $request->name,
+                        'course' => $request->course,
+                        'email' => $request->email,
+                        'phone' => $request->phone,
+                    ]);
+
+                    return response()->json([
+                        'status' => 200,
+                        'message'=> 'Student Updated Successfully'
+                    ],200);
+                }else{
+                    return response()->json([
+                        'status' => 404,
+                        'message'=> 'No student found'
+                    ],404);
+
+                }
+             }
 
         }
  }
