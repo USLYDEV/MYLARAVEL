@@ -1,0 +1,80 @@
+database->model->controller->view->route
+=========================================
+install laravel
+=========================================
+create DB in phpadmin
+Create table in db;ex;php artisan make:migration create_flights_table
+run migrate;ex;php artisan migrate
+=========================================
+create model; eloquent;ex;php artisan make:model Flight
+fill and manage model with information;ex;
+    protected $fillable = ['name', 'qty', 'price', 'description'];
+=========================================
+create controller;ex;php artisan make:controller FlightController
+=========================================
+create a Flight view in resource view
+=========================================
+create a route in your routes web.php;ex;
+Route::get('/product', [ProductController::class, ''])->name('product.index');
+create function in controller;ex;
+    public function index (){return view('products.index');}
+to be able to submit form to DB create route for form post method
+=========================================
+store function in controller must have request;ex;
+ public function store (Request $request){ dd($request); }
+
+make post action;ex;
+ <form method='post' action="{{ route('product.store') }}">
+
+======================================== 
+Validate data before submission in controller
+            $data = $request->validate([
+                'name' => 'required',
+                'qty' => 'required',
+                'price' => 'required',
+                'description' => 'required'
+            ]);
+======================================== 
+Storing data in DB, import model in controller then create the function
+this function store the data;ex; $newProduct = Product::create($data);
+========================================
+Loop through Items =====================
+  @if ($errors->any())
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li> {{ $error }}</li>
+                    @endforeach
+                </ul>   
+            @endif
+========================================
+Fecthing/ reading data from database=======
+#
+         public function index (){
+            //this connect to model to fect list of all product in DB
+            $products = Product::all();
+            //Main view
+            return view('products.index', 
+            //this also declare all product from model in DB
+            ['products' => $products]);
+        }
+============ Table fecthing data from DB;ex;
+        <table border="2">
+            <tr>
+                <th>ID</th>
+                <td>Name</td>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Description</th>
+            </tr>
+
+            @foreach ($products as $product)
+                <tr>
+                    <td>{{ $product->id }}</td>
+                    <td>{{ $product->name }}</td>
+                    <td>{{ $product->qty }}</td>
+                    <td>{{ $product->price }}</td>
+                    <td>{{ $product->description }}</td>
+                </tr>
+            @endforeach
+        </table>
+========================================
