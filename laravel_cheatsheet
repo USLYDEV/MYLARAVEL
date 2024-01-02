@@ -1,3 +1,12 @@
+ERROR 
+issue type: file put content in laravel no such file or directory
+solution: The best way to solve this problem is, go to directory laravel/bootstrap/cache and delete config.php file. or you can rename it as well like config.php.old And your problem will be fixed.
+
+issue type: when route have issue
+solution: php artisan optimize
+=======================
+
+
 database->model->controller->view->route
 =========================================
 install laravel
